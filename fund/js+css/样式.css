@@ -1,0 +1,947 @@
+﻿:root {
+    --一类背景-页面底色: #eef0f2;
+    --二类背景-卡片表格输入框: #ffffff;
+    --五类背景-提示条背景: #0f172a;
+    --默认边框: #eef2f7;
+    --浅色边框: #cbd5e1;
+    --悬停边框: #94a3b8;
+    --深底文字色: #ffffff;
+    --强调深色: #556575;
+    --四类背景-按钮激活色: #e8edf3;
+    --强调边框: #c5cdd5;
+    --上涨悬停色: #dc2626;
+    --九类背景-上涨红色底: rgba(239,68,68,0.1);
+    --下跌悬停色: #16a34a;
+    --十类背景-下跌绿色底: rgba(34,197,94,0.1);
+    --三类背景-顶部导航栏: linear-gradient(135deg, #e2e8f0 0%, #f1f5f9 50%, #e8edf2 100%);
+    --头部文字: #1e293b;
+    --头部光晕: rgba(30, 58, 95, 0.06);
+    --卡片阴影:
+      2px 2px 4px rgba(0,0,0,0.08),
+      4px 4px 8px rgba(0,0,0,0.06);
+    --按钮光标: pointer;
+    --危险按钮文字: #dc2626;
+    --危险按钮边框: 1px solid rgba(220, 38, 38, 0.5);
+    --八类背景-危险按钮背景: rgba(239, 68, 68, 0.07);
+    --表头分割线: #dce1e8;
+    --六类背景-弹窗背景: rgba(255, 255, 255, 0.75);
+    --按钮圆角: 12px;
+    --按钮下压: transform 0.3s ease;
+    --下压距离: 5px;
+
+    --一类字体大小: 10px;
+    --二类字体大小: 12px;
+    --三类字体大小: 14px;
+    --四类字体大小: 16px;
+    --五类字体大小: 18px;
+    --六类字体大小: 22px;
+
+    --一类字体颜色: #0f172a;
+    --二类字体颜色: #5F6875;
+    --三类字体颜色: #4b5563;
+    --四类字体颜色: #6b7b8d;
+    --五类字体颜色: #ef4444;
+    --六类字体颜色: #22c55e;
+  }
+  body.dark {
+    --表头分割线: #2b3c4f;
+    --六类背景-弹窗背景: rgba(26, 30, 38, 0.5);
+    --一类背景-页面底色: #000000;
+    --二类背景-卡片表格输入框: #1a1e26;
+    --五类背景-提示条背景: #0f172a;
+    --深底文字色: #000000;
+    --默认边框: #222c38;
+    --浅色边框: #5a6d7e;
+    --悬停边框: #7e92a6;
+    --强调深色: #6b7b8d;
+    --四类背景-按钮激活色: #283449;
+    --强调边框: rgba(107,123,141,0.3);
+    --上涨悬停色: #ef4444;
+    --九类背景-上涨红色底: rgba(248,113,113,0.15);
+    --下跌悬停色: #22c55e;
+    --十类背景-下跌绿色底: rgba(74,222,128,0.15);
+    --三类背景-顶部导航栏: linear-gradient(135deg, #141a24 0%, #1e2e3d 50%, #1c222c 100%);
+    --头部文字: #ffffff;
+    --头部光晕: rgba(255,255,255,0.06);
+    --卡片阴影:
+      2px 2px 4px rgba(180,188,200,0.10),
+      4px 4px 8px rgba(180,188,200,0.08);
+
+    --一类字体颜色: #e2e8f0;
+    --二类字体颜色: #96AAB5;
+    --三类字体颜色: #b8c5cc;
+    --四类字体颜色: #a0b4c2;
+    --五类字体颜色: #f87171;
+    --六类字体颜色: #4ade80;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; } /* 去除移动端点击高亮 */
+  html, body { touch-action: manipulation; scrollbar-width: none; -ms-overflow-style: none; } /* 去除300ms延迟 + 全局隐藏滚动条 */
+  html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; } /* 全局隐藏滚动条 */
+  ::-webkit-scrollbar { width: 0 !important; height: 0 !important; } /* 所有元素滚动条宽度设为0 */
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background: var(--一类背景-页面底色); color: var(--二类字体颜色); min-height: 100vh;
+    max-width: 480px; margin: 0 auto;
+    padding-bottom: 12px;
+  }
+  
+  .页面-头部 {
+    background: var(--三类背景-顶部导航栏);
+    padding: 16px 0 12px; color: var(--头部文字);
+    position: relative; overflow: hidden;
+    border-radius: 12px;
+    margin: 0;
+    box-shadow: var(--卡片阴影);
+  }
+  .页面-头部::before {
+    content: ''; position: absolute; top: -60%; right: -10%;
+    width: 280px; height: 280px; background: var(--头部光晕);
+    border-radius: 50%; pointer-events: none;
+  }
+  .页面-头部::after {
+    content: ''; position: absolute; bottom: -40%; left: -5%;
+    width: 200px; height: 200px; background: var(--头部光晕);
+    border-radius: 50%; pointer-events: none;
+  }
+  .页面-头部 h1 { font-size: var(--五类字体大小); font-weight: 700; margin-bottom: 6px; letter-spacing: 0.3px; padding-left: 10px; }
+  .页面-头部 .update-time { font-size: var(--一类字体大小); opacity: 0.7; font-weight: 400; padding-left: 10px; }
+  
+  .指数-栏 {
+    padding: 8px 0; display: flex; flex-direction: column; gap: 6px;
+  }
+  .指数-内容 { position: relative; min-height: 80px; }
+  #sectorPanel { overflow: hidden; display: flex; flex-direction: column; background: var(--二类背景-卡片表格输入框); border-radius: 12px; box-shadow: var(--卡片阴影); }
+  #indexCards { display: grid; grid-template-columns: repeat(3, minmax(80px, 1fr)); gap: 8px; flex: 1; }
+  .指数-标签 {
+    display: flex; gap: 0; margin-bottom: 4px; position: relative;
+    background: var(--二类背景-卡片表格输入框); border-radius: var(--按钮圆角); overflow: hidden;
+  }
+  .指数-标签项 {
+    flex: 1; text-align: center; padding: 7px 0;
+    font-size: var(--二类字体大小); font-weight: 500; position: relative; z-index: 2;
+    cursor: var(--按钮光标); color: var(--三类字体颜色);
+    background: transparent; border: none;
+    transition: color 0.25s;
+  }
+  .指数-标签项.active { color: var(--四类字体颜色); }
+  .指数-指示器 {
+    position: absolute; bottom: 0; height: 2px;
+    background: var(--四类字体颜色);
+    transition: left 0.3s ease, width 0.3s ease;
+    pointer-events: none; z-index: 1;
+  }
+  .板块-标题 { display: flex; align-items: center; padding: 0 6px; padding-right: 12px; font-size: var(--二类字体大小); color: var(--三类字体颜色); font-weight: 600; border-bottom: 1px solid var(--浅色边框); cursor: pointer; user-select: none; min-height: 24px; }
+  .板块-标题 span { color: var(--二类字体颜色); }
+  .板块-标题 .sort-arrow { font-size: var(--一类字体大小); margin-left: 2px; }
+  .sh-name { flex: 1; }
+  .sh-pct { width: 60px; text-align: right; }
+  .sh-flow { width: 70px; text-align: right; }
+  .板块-列表 { overflow-y: auto; }
+  .板块-列表::-webkit-scrollbar { width: 6px !important; }
+  .板块-列表::-webkit-scrollbar-track { background: transparent !important; }
+  .板块-列表::-webkit-scrollbar-thumb { background: #9ca3af !important; border-radius: 3px; }
+  body.dark .板块-列表::-webkit-scrollbar-thumb { background: var(--浅色边框) !important; }
+  .板块-行 { display: flex; align-items: center; padding: 5px 6px; font-size: var(--二类字体大小); border-bottom: 1px solid var(--浅色边框); }
+  .板块-行:last-child { border-bottom: none; }
+  .sr-name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--一类字体颜色); }
+  .sr-pct { width: 60px; text-align: right; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .sr-flow { width: 70px; text-align: right; font-variant-numeric: tabular-nums; }
+  .sr-pct.up { color: var(--五类字体颜色); }
+  .sr-pct.down { color: var(--六类字体颜色); }
+  .sr-pct.flat { color: var(--三类字体颜色); }
+  .sr-flow.up { color: var(--五类字体颜色); }
+  .sr-flow.down { color: var(--六类字体颜色); }
+  .sr-flow.flat { color: var(--三类字体颜色); }
+
+/* ========== 一类：主按钮 ========== */
+.一类 {
+  padding: 7px 12px;
+  border-radius: var(--按钮圆角);
+  font-size: var(--二类字体大小);
+  font-weight: 500;
+  cursor: var(--按钮光标);
+  border: none;
+  background: var(--二类背景-卡片表格输入框);
+  color: var(--一类字体颜色);
+  box-shadow: var(--卡片阴影);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--按钮下压);
+  outline: none;
+}
+.一类.active { background: var(--四类背景-按钮激活色); color: var(--一类字体颜色); }
+.一类:active, .二类:active, .指数-标签项:active { transform: translateY(var(--下压距离)); }
+
+/* ========== 二类：长按钮 ========== */
+.二类 {
+  padding: 0 12px;
+  font-size: var(--二类字体大小);
+  font-weight: 500;
+  border: 1px solid var(--悬停边框);
+  border-radius: 12px;
+  background: transparent;
+  color: var(--一类字体颜色);
+  cursor: var(--按钮光标);
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: var(--按钮下压);
+  min-width: 44px;
+  box-sizing: border-box;
+  display: inline-block;
+  line-height: 2;
+  outline: none;
+}
+.二类.active { background: var(--四类背景-按钮激活色); color: var(--一类字体颜色); }
+
+/* ========== 三类：短按钮 ========== */
+.三类 {
+  width: 100%;
+  padding: 0 12px;
+  font-size: var(--三类字体大小);
+  font-weight: 500;
+  border: 1px solid var(--悬停边框);
+  border-radius: 12px;
+  background: transparent;
+  color: var(--一类字体颜色);
+  cursor: var(--按钮光标);
+  text-align: center;
+  outline: none;
+  line-height: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ========== 四类：危险按钮 ========== */
+.四类 {
+  padding: 0 8px;
+  font-size: var(--二类字体大小);
+  font-weight: 500;
+  border: var(--危险按钮边框);
+  border-radius: 12px;
+  background: var(--八类背景-危险按钮背景);
+  color: var(--危险按钮文字);
+  cursor: var(--按钮光标);
+  display: inline-block;
+  line-height: 2;
+  outline: none;
+}
+
+/* ========== 五类：图标按钮 ========== */
+.五类 {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: var(--按钮光标);
+  padding: 0 4px;
+  background: none;
+  border: none;
+  color: var(--一类字体颜色);
+  line-height: 2;
+  outline: none;
+}
+
+  .基金-列表 tbody tr:active td { background: var(--四类背景-按钮激活色); }
+
+  .指数-卡片 {
+    border-radius: 12px; padding: 8px 4px;
+    text-align: center; cursor: var(--按钮光标);
+    border: none;
+    box-shadow: var(--卡片阴影); position: relative;
+    transition: transform 0.2s ease;
+  }
+  .指数-卡片:active { transform: scale(0.96); }
+  
+  .指数-卡片.border-up {
+    background: radial-gradient(circle at 0% 0%, rgba(239,68,68,0.18) 0%, rgba(239,68,68,0.07) 40%, rgba(239,68,68,0.025) 100%), var(--二类背景-卡片表格输入框);
+  }
+  .指数-卡片.border-down {
+    background: radial-gradient(circle at 0% 0%, rgba(34,197,94,0.18) 0%, rgba(34,197,94,0.07) 40%, rgba(34,197,94,0.025) 100%), var(--二类背景-卡片表格输入框);
+  }
+  .指数-卡片.border-flat {
+    background: radial-gradient(circle at 0% 0%, rgba(148,163,184,0.10) 0%, rgba(148,163,184,0.035) 40%, rgba(148,163,184,0.012) 100%), var(--二类背景-卡片表格输入框);
+  }
+  .index-name { font-size: var(--一类字体大小); color: var(--三类字体颜色); margin-bottom: 4px; font-weight: 600; letter-spacing: 0.3px; height: 14px; line-height: 14px; overflow: hidden; white-space: nowrap; }
+  .index-value { font-size: var(--三类字体大小); font-weight: 700; color: var(--一类字体颜色); font-variant-numeric: tabular-nums; height: 20px; line-height: 20px; }
+  .index-value.up { color: var(--五类字体颜色); }
+  .index-value.down { color: var(--六类字体颜色); }
+  .index-value.flat { color: var(--一类字体颜色); }
+  .index-change-row { font-size: var(--一类字体大小); margin-top: 3px; font-weight: 600; height: 14px; line-height: 14px; }
+  .index-change-row.up { color: var(--五类字体颜色); }
+  .index-change-row.down { color: var(--六类字体颜色); }
+  .index-change-row.flat { color: var(--三类字体颜色); }
+  
+  .汇总-栏 {
+    padding: 10px 8px; display: flex;
+    gap: 0;
+    background: var(--二类背景-卡片表格输入框);
+    border-bottom: 1px solid var(--表头分割线);
+    border-radius: 12px 12px 0 0;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  .汇总-左侧 {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .汇总-资产标签 {
+    font-size: var(--二类字体大小);
+    color: var(--三类字体颜色);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .汇总-眼睛 {
+    cursor: pointer;
+    font-size: var(--三类字体大小);
+    opacity: 1;
+  }
+  .汇总-资产数值 {
+    font-size: var(--五类字体大小);
+    font-weight: 700;
+    color: var(--一类字体颜色);
+    font-variant-numeric: tabular-nums;
+  }
+  .汇总-右侧 {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+  }
+  .汇总-今日行 {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+  }
+  .汇总-今日标签 {
+    font-size: var(--二类字体大小);
+    color: var(--三类字体颜色);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .汇总-今日数值 {
+    font-size: var(--五类字体大小);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+  .汇总-今日数值.up { color: var(--五类字体颜色); }
+  .汇总-今日数值.down { color: var(--六类字体颜色); }
+  .汇总-今日比率 {
+    font-size: var(--三类字体大小);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+  .汇总-今日比率.up { color: var(--五类字体颜色); }
+  .汇总-今日比率.down { color: var(--六类字体颜色); }
+  
+  #groupBar {
+    display: flex;
+    min-width: 0;
+    flex: 1;
+  }
+  #groupBar.hidden {
+    visibility: hidden;
+  }
+  .group-bar-inline {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: nowrap;
+  }
+  #groupTabs {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .页面-操作区 {
+    padding: 8px 3px;
+    display: flex; flex-wrap: nowrap; gap: 8px; align-items: center;
+  }
+  .页面-输入框 {
+    border: 1px solid var(--默认边框); padding: 7px 12px; border-radius: 12px;
+    font-size: var(--三类字体大小); outline: none; background: var(--二类背景-卡片表格输入框); color: var(--一类字体颜色);
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .页面-输入框:focus { outline: none; }
+  .页面-输入框::placeholder { color: var(--三类字体颜色); }
+
+  .更多-按钮容器 { position: relative; }
+  .更多-下拉菜单 {
+    position: absolute; top: 100%; right: 0; left: auto; margin-top: 6px;
+    background: var(--二类背景-卡片表格输入框); border-radius: 12px; min-width: 180px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.12), 0 4px 12px rgba(0,0,0,0.08);
+    z-index: 100; display: none; overflow: hidden;
+    border: 1px solid var(--浅色边框);
+  }
+  .更多-下拉菜单.active { display: block; }
+  .更多-菜单项 {
+    padding: 11px 18px; font-size: var(--二类字体大小); cursor: var(--按钮光标);
+    border-bottom: 1px solid var(--默认边框); color: var(--一类字体颜色);
+    font-weight: 500; background: var(--二类背景-卡片表格输入框);
+  }
+  .更多-菜单项:last-child { border-bottom: none; }
+    
+  .批量-输入框 {
+    width: 100%; min-height: 180px; padding: 10px 12px; border: 1px solid var(--默认边框);
+    border-radius: 12px; font-size: var(--二类字体大小); color: var(--一类字体颜色); font-family: monospace; resize: vertical;
+    background: var(--二类背景-卡片表格输入框); outline: none;
+  }
+  .批量-输入框:focus { outline: none; }
+  
+  .基金-列表 {
+    display: table;
+    table-layout: fixed;
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .基金-列表 thead th {
+    cursor: pointer; padding: 8px 8px;
+    text-align: right; vertical-align: middle;
+    font-size: var(--一类字体大小); color: var(--四类字体颜色); font-weight: 600;
+    letter-spacing: 0.3px;
+    user-select: none;
+    white-space: nowrap; overflow: hidden;
+    background: var(--二类背景-卡片表格输入框);
+    border-bottom: 1px solid var(--表头分割线);
+    position: sticky; top: 0; z-index: 3;
+  }
+  .基金-列表 thead th:first-child {
+    text-align: left;
+    padding-left: 8px;
+    position: sticky; left: 0; top: 0; z-index: 4;
+    overflow: visible;
+  }
+  .基金-列表 tbody td {
+    padding: 8px 8px; white-space: nowrap;
+    text-align: right;
+    background: var(--二类背景-卡片表格输入框);
+    border-bottom: 1px solid var(--默认边框);
+  }
+  .基金-列表 tbody td:first-child {
+    position: sticky; left: 0; z-index: 2;
+    background: var(--二类背景-卡片表格输入框);
+    text-align: left;
+    padding-left: 8px;
+  }
+  .基金-列表 tbody tr:last-child td { border-bottom: none; }
+  .基金-名称 {
+    display: flex; flex-direction: column; min-width: 0;
+  }
+  .sort-arrow { font-size: var(--一类字体大小); margin-left: 2px; }
+  .列表-排序.asc .sort-arrow::after { content: '↑'; color: var(--四类字体颜色); }
+  .列表-排序.desc .sort-arrow::after { content: '↓'; color: var(--四类字体颜色); }
+  .col-gear { cursor: var(--按钮光标); font-size: var(--二类字体大小); opacity: 1; margin-left: 8px; vertical-align: -1px; padding: 4px; line-height: 1; }
+  
+  .基金-卡片容器 {
+    position: relative;
+    background: var(--二类背景-卡片表格输入框);
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 0 0 6px 0;
+    box-shadow: var(--卡片阴影);
+  }
+  .基金-卡片 {
+    overflow-x: auto;
+  }
+  .列-阴影 {
+    position: absolute; top: 0;
+    width: 6px; bottom: 0;
+    pointer-events: none;
+    background: linear-gradient(to right, rgba(0,0,0,0.08) 0%, transparent 100%);
+    opacity: 0;
+    transition: opacity 0.15s;
+    z-index: 10;
+  }
+  .基金-卡片.横向滚动 ~ .列-阴影 {
+    opacity: 1;
+  }
+  body.dark .列-阴影 {
+    background: linear-gradient(to right, rgba(0,0,0,0.25) 0%, transparent 100%);
+  }
+  .基金-基金名 {
+    font-weight: 600; font-size: var(--三类字体大小); color: var(--一类字体颜色);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .updated-tag {
+    display: inline-block;
+    font-size: var(--一类字体大小);
+    line-height: 1.3;
+    vertical-align: middle;
+    color: #2563eb;
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-radius: 12px;
+    padding: 1px 6px;
+    font-weight: 500;
+    white-space: nowrap;
+    margin-top: 3px;
+  }
+  
+  .基金-金额数值 { font-weight: 600; font-size: var(--三类字体大小); color: var(--二类字体颜色); margin-top: 1px; }
+  
+  .基金-涨跌, .基金-今日, .基金-累计, .基金-净值, .基金-成本, .基金-份额, .基金-占比, .基金-代码, .基金-估值 { display: flex; flex-direction: column; justify-content: center; }
+  .基金-涨跌数值, .基金-累计数值 { font-weight: 700; font-size: var(--三类字体大小); }
+  .基金-涨跌数值.up { color: var(--五类字体颜色); } .基金-涨跌数值.down { color: var(--六类字体颜色); }
+  .基金-板块 { font-size: var(--一类字体大小); margin-top: 1px; font-weight: 600; color: var(--三类字体颜色); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .基金-收益 { font-size: var(--三类字体大小); font-weight: 700; }
+  .基金-收益.up { color: var(--五类字体颜色); } .基金-收益.down { color: var(--六类字体颜色); }
+  .基金-累计比率 { font-size: var(--一类字体大小); margin-top: 1px; font-weight: 600; }
+  .基金-累计比率.up { color: var(--五类字体颜色); } .基金-累计比率.down { color: var(--六类字体颜色); }
+  .基金-累计数值.up { color: var(--五类字体颜色); } .基金-累计数值.down { color: var(--六类字体颜色); }
+  .基金-净值数值, .基金-成本数值, .基金-份额数值, .基金-占比数值, .基金-估值数值, .基金-代码数值 { font-size: var(--二类字体大小); font-weight: 500; color: var(--二类字体颜色); }
+  
+  .详情-内部 { padding: 6px 2px; width: 100%; box-sizing: border-box; }
+  .detail-main {
+    display: flex;
+    gap: 8px;
+    align-items: stretch;
+    flex-wrap: nowrap;
+  }
+  .trend-chart-wrapper {
+    flex: 1 1 0;
+    min-width: 0;
+    width: 100%;
+    position: relative;
+    height: 220px;
+  }
+  .trend-chart { width: 100%; height: 100%; border-radius: 12px; background: transparent; display: block; }
+  .chart-loading {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border-radius: 12px;
+    z-index: 10;
+    transition: opacity 0.3s;
+  }
+  .chart-loading.hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+  .chart-loading-spinner {
+    width: 24px;
+    height: 24px;
+    border: 2px solid var(--默认边框);
+    border-top-color: var(--四类字体颜色);
+    border-radius: 50%;
+    animation: chart-spin 0.8s linear infinite;
+  }
+  @keyframes chart-spin {
+    to { transform: rotate(360deg); }
+  }
+  body.dark .chart-loading {
+    background: transparent;
+  }
+  body.dark .chart-loading-spinner {
+    border-color: var(--三类字体颜色);
+    border-top-color: var(--四类字体颜色);
+  }
+  .detail-controls { display: flex; flex-direction: column; gap: 6px; padding: 4px 8px; width: 100%; }
+  .detail-controls .图表-标签 { display: flex; flex-direction: row; gap: 6px; flex: 1; }
+  .detail-controls .二类 { text-align: center; flex: 1; display: block; }
+  .detail-controls .二类.active { background: var(--四类背景-按钮激活色); color: var(--一类字体颜色); }
+  #actionModal .二类 { flex: 1; text-align: center; }
+  #actionModal .二类.active { background: var(--四类背景-按钮激活色); color: var(--一类字体颜色); }
+
+  #tabSettings {
+    padding: 16px; min-width: 260px;
+  }
+  #tabSettings .ts-title { font-weight:600; font-size:var(--三类字体大小); color:var(--一类字体颜色); margin-bottom:12px; }
+  #tabSettings .ts-row, #colSettingsModal .ts-row { display:flex; align-items:center; gap:8px; padding:6px 8px; margin:0 -8px; border-radius:12px; cursor:grab; -webkit-user-select:none; user-select:none; -webkit-touch-callout:none; touch-action:none; transition:background 0.15s, transform 0.15s; }
+  #tabSettings .ts-row:active, #colSettingsModal .ts-row:active { cursor:grabbing; }
+  #tabSettings .ts-row .ts-drag, #colSettingsModal .ts-row .ts-drag { color:var(--三类字体颜色); font-size:var(--三类字体大小); cursor:grab; flex-shrink:0; }
+  #tabSettings .ts-row .ts-label, #colSettingsModal .ts-row .ts-label { font-size:var(--二类字体大小); color: var(--二类字体颜色); flex:1; }
+  #tabSettings .ts-row.dragging, #colSettingsModal .ts-row.dragging { opacity:0.4; }
+  #tabSettings .ts-row.drag-over, #colSettingsModal .ts-row.drag-over { background:var(--默认边框); }
+  #tabSettings .ts-ok { margin-top:12px; width:100%; padding:0 12px; border:1px solid var(--悬停边框); border-radius:12px; background:transparent; color:var(--二类字体颜色); font-size:var(--三类字体大小); font-weight:500; cursor:var(--按钮光标); }
+  #tabSettings .ts-hint, #colSettingsModal .ts-hint { font-size:var(--二类字体大小); color:var(--三类字体颜色); text-align:left; margin-top:6px; }
+  
+  .detail-info-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 0px;
+    background: transparent;
+    font-size: var(--二类字体大小);
+    font-weight: 500;
+    color: var(--三类字体颜色);
+  }
+  .period-change {
+    font-size: var(--二类字体大小); font-weight:500; min-width: 110px; padding-left: 0; }
+  .period-change .基金-标签 { font-weight:500; color:var(--三类字体颜色); }
+  .period-change .基金-涨跌幅 { font-weight:600; }
+  .period-change .基金-涨跌幅.up { color: var(--五类字体颜色); }
+  .period-change .基金-涨跌幅.down { color: var(--六类字体颜色); }
+  body.dark .period-change .基金-标签 { color: var(--三类字体颜色); }
+  .detail-info-code { min-width: 105px; margin-left: -4px; font-weight: 500; color: var(--三类字体颜色); }
+  .detail-info-time { min-width: 60px; flex-shrink: 0; margin-left: -4px; color: var(--三类字体颜色); font-weight: 500; }
+  
+  .index-ref { background: var(--二类背景-卡片表格输入框); border-radius: 12px; padding: 10px 14px; margin-bottom: 10px; border: 1px solid var(--默认边框); }
+  .index-ref-title {
+    font-size: var(--二类字体大小); font-weight: 600; color: var(--三类字体颜色); margin-bottom: 6px; }
+  .index-ref-row {
+    font-size: var(--二类字体大小); display: flex; gap: 16px; color: var(--二类字体颜色); flex-wrap: wrap; }
+  .index-diff { font-weight: 600; color: var(--一类字体颜色); }
+  
+  .group-list-item {
+    display: flex; align-items: center; gap: 8px; padding: 10px 0;
+    border-bottom: 1px solid var(--默认边框);
+  }
+  .group-list-item:last-child { border-bottom: none; }
+  .group-list-name {
+    flex: 1; font-size: var(--三类字体大小); color: var(--一类字体颜色); font-weight: 500;
+    background: transparent; border: none; outline: none;
+  }
+  .group-list-name:focus { outline: none; }
+  .group-list-del {
+    padding: 4px 10px; font-size: var(--二类字体大小); border: none; border-radius: 12px;
+    cursor: var(--按钮光标); background: var(--八类背景-危险按钮背景); color: var(--五类字体颜色); font-weight: 500;
+  }
+  .group-add-row {
+    display: flex; gap: 8px; align-items: center; margin-top: 10px;
+  }
+  
+  .弹窗-遮罩层 {
+    position: fixed; inset: 0; background: transparent;
+    display: none; align-items: center; justify-content: center; z-index: 2000;
+    overscroll-behavior: contain; pointer-events: none;
+  }
+  #actionModal { z-index: 2100; }
+  .弹窗-遮罩层.active { display: flex; backdrop-filter: blur(6px) brightness(0.8); -webkit-backdrop-filter: blur(6px) brightness(0.8); }
+  #confirmModal { z-index: 3000; }
+  /* 弹窗打开时不限制 body 滚动，滚动由 JS 精确控制 */
+  .弹窗-卡片 {
+    border-radius: 22px; width: 90%; max-width: 420px;
+    max-height: 80vh; overflow: hidden; display: flex; flex-direction: column;
+    overscroll-behavior: contain; pointer-events: auto;
+    background: var(--六类背景-弹窗背景);
+    backdrop-filter: blur(20px) saturate(60%); -webkit-backdrop-filter: blur(20px) saturate(60%);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: var(--卡片阴影);
+    touch-action: pan-y;
+    position: relative;
+  }
+  .弹窗-遮罩层.active .弹窗-卡片:not(.跳过动画) { animation: modal弹入 0.3s ease-out forwards; }
+  @keyframes modal弹入 {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+  body.dark .弹窗-卡片 {
+    background: var(--六类背景-弹窗背景);
+    border-color: rgba(100, 110, 125, 0.35);
+  }
+  .弹窗-标题 {
+    padding: 16px 20px; border-bottom: 1px solid var(--浅色边框);
+    font-size: var(--三类字体大小); font-weight: 600; display: flex; color: var(--一类字体颜色);
+    justify-content: space-between; align-items: center;
+  }
+  .弹窗-关闭按钮 {
+    font-size: var(--六类字体大小); color: var(--一类字体颜色); padding: 0 4px; }
+  .弹窗-内容 { padding: 16px 20px; overflow-y: auto; flex: 1; min-width: 0; min-height: 0; width: 100%; box-sizing: border-box; overscroll-behavior: contain; }
+  .form-input { width: 100%; padding: 10px 12px; font-size: var(--三类字体大小); border: 1px solid var(--默认边框); border-radius: 12px; outline: none; background: var(--二类背景-卡片表格输入框); color: var(--一类字体颜色); }
+  /* 历史净值区域显示滚动条（特殊需求：只有板块列表和历史净值需要滚动条） */
+  .tab-panel-history::-webkit-scrollbar, #historyModal .弹窗-内容::-webkit-scrollbar { width: 6px !important; }
+  .tab-panel-history::-webkit-scrollbar-track, #historyModal .弹窗-内容::-webkit-scrollbar-track { background: transparent !important; }
+  .tab-panel-history::-webkit-scrollbar-thumb, #historyModal .弹窗-内容::-webkit-scrollbar-thumb { background: #9ca3af !important; border-radius: 3px; }
+  body.dark .tab-panel-history::-webkit-scrollbar-thumb, body.dark #historyModal .弹窗-内容::-webkit-scrollbar-thumb { background: var(--浅色边框) !important; }
+  .弹窗-底部 {
+    padding: 12px 20px; border-top: 1px solid var(--浅色边框);
+    display: flex; justify-content: flex-end; gap: 8px;
+  }
+  
+  .index-option {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 0; border-bottom: 1px solid var(--默认边框); cursor: var(--按钮光标);
+    transition: background 0.1s;
+  }
+  .index-option:last-child { border-bottom: none; }
+  .index-option input[type="checkbox"] { width: 18px; height: 18px; cursor: pointer; accent-color: var(--四类字体颜色); }
+  .index-option .io-name { font-size: var(--三类字体大小); flex: 1; color: var(--一类字体颜色); font-weight: 500; }
+  .index-option .io-code {
+    font-size: var(--二类字体大小); color: var(--三类字体颜色); }
+  
+  .图标 { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; vertical-align: -0.125em; pointer-events: none; }
+  .icon-spin { animation: spin 0.6s ease-in-out; }
+  @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+  .toast {
+    position: fixed; bottom: 28px; left: 50%;
+    transform: translateX(-50%);
+    opacity: 0; visibility: hidden; pointer-events: none;
+    background: var(--五类背景-提示条背景); color: white; padding: 12px 24px; border-radius: 12px;
+    font-size: var(--二类字体大小); font-weight: 500; z-index: 10000; transition: opacity 0.35s, visibility 0.35s;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+  }
+  .toast.show { opacity: 1; visibility: visible; pointer-events: auto; }
+  
+  .val-hidden { color: var(--三类字体颜色); letter-spacing: 2px; }
+  
+  .t-9, .t-10 { font-size: var(--一类字体大小); color: var(--三类字体颜色); }
+  .t-12 { font-size: var(--二类字体大小); color: var(--三类字体颜色); }
+
+  body.dark .指数-卡片.border-up {
+    background: radial-gradient(circle at 0% 0%, rgba(239,68,68,0.30) 0%, rgba(239,68,68,0.10) 40%, rgba(239,68,68,0.04) 100%), var(--二类背景-卡片表格输入框);
+  }
+  body.dark .指数-卡片.border-down {
+    background: radial-gradient(circle at 0% 0%, rgba(34,197,94,0.30) 0%, rgba(34,197,94,0.10) 40%, rgba(34,197,94,0.04) 100%), var(--二类背景-卡片表格输入框);
+  }
+  body.dark .指数-卡片.border-flat {
+    background: radial-gradient(circle at 0% 0%, rgba(148,163,184,0.12) 0%, rgba(148,163,184,0.045) 40%, rgba(148,163,184,0.02) 100%), var(--二类背景-卡片表格输入框);
+  }
+  body.dark .更多-下拉菜单 { box-shadow: 0 10px 40px rgba(0,0,0,0.4); }
+
+  /* 账户汇总卡片 */
+  .group-summary-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding: 0;
+  }
+  .group-summary-card {
+    background: transparent;
+    border-radius: 0;
+    padding: 10px 13px;
+    box-shadow: none;
+    cursor: var(--按钮光标);
+    border-bottom: 1px solid var(--默认边框);
+    /* 固定最小高度确保所有分组卡片高度一致，避免内容多少导致高度差异 */
+    min-height: 142px;
+  }
+  .group-summary-card:last-child {
+    border-bottom: none;
+  }
+  .gsc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+  }
+  .gsc-name {
+    font-size: var(--三类字体大小);
+    font-weight: 600;
+    color: var(--一类字体颜色);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .gsc-name::before {
+    content: '';
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='2' y='3' width='20' height='14' rx='2' ry='2'/%3E%3Cline x1='8' y1='21' x2='16' y2='21'/%3E%3Cline x1='12' y1='17' x2='12' y2='21'/%3E%3C/svg%3E") no-repeat center;
+    background-size: contain;
+  }
+  .gsc-trend {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: var(--三类字体大小);
+    font-weight: 600;
+  }
+  .gsc-trend-up {
+    color: var(--五类字体颜色);
+  }
+  .gsc-trend-down {
+    color: var(--六类字体颜色);
+  }
+  .gsc-main {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  .gsc-asset-section {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .gsc-asset-label {
+    font-size: var(--二类字体大小);
+    color: var(--三类字体颜色);
+  }
+  .gsc-asset-value {
+    font-size: var(--四类字体大小);
+    font-weight: 700;
+    color: var(--一类字体颜色);
+    font-variant-numeric: tabular-nums;
+  }
+  .gsc-today-section {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+  }
+  .gsc-today-label {
+    font-size: var(--二类字体大小);
+    color: var(--三类字体颜色);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .gsc-today-value {
+    font-size: var(--四类字体大小);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+  .gsc-today-value.up { color: var(--五类字体颜色); }
+  .gsc-today-value.down { color: var(--六类字体颜色); }
+  .gsc-today-rate {
+    font-size: var(--二类字体大小);
+    font-weight: 600;
+  }
+  .gsc-today-rate.up { color: var(--五类字体颜色); }
+  .gsc-today-rate.down { color: var(--六类字体颜色); }
+  .gsc-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-top: 4px;
+    padding-top: 4px;
+  }
+  .gsc-bottom-label {
+    font-size: var(--二类字体大小);
+    color: var(--三类字体颜色);
+    margin-bottom: 2px;
+  }
+  .gsc-bottom-val {
+    font-size: var(--四类字体大小);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+  .gsc-bottom-val.up { color: var(--五类字体颜色); }
+  .gsc-bottom-val.down { color: var(--六类字体颜色); }
+  .gsc-bottom-rate {
+    font-size: var(--二类字体大小);
+    font-weight: 600;
+    margin-left: 4px;
+  }
+  .gsc-today-rate-inline {
+    font-size: var(--二类字体大小);
+    font-weight: 600;
+    margin-left: 4px;
+  }
+  .gsc-today-rate-inline.up { color: var(--五类字体颜色); }
+  .gsc-today-rate-inline.down { color: var(--六类字体颜色); }
+  .gsc-bottom-rate.up { color: var(--五类字体颜色); }
+  .gsc-bottom-rate.down { color: var(--六类字体颜色); }
+  body.dark .updated-tag { color: #60a5fa; background: rgba(59,130,246,0.15); border-color: rgba(59,130,246,0.3); }
+  body.dark #indexChartInfo { background: transparent !important; border-color: #475569 !important; }
+  body.dark #indexChartInfo span { color: #f1f5f9 !important; }
+  body.dark #indexChartInfo #icDate { color: #ffffff !important; }
+  body.dark #indexDetailBody div[style*="color:var(--一类字体颜色)"] { color: #e2e8f0 !important; }
+  #indexChartInfo div { color: var(--二类字体颜色); }
+  #indexDetailCanvas { transition: opacity 0.5s ease; }
+  #icDate { color: var(--二类字体颜色); }
+  body.dark .chart-tooltip {
+    background: var(--二类背景-卡片表格输入框);
+    border-color: var(--二类字体颜色);
+    color: #cbd5e1;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  }
+  .version-tag {
+    position: absolute; top: 10px; right: 16px;
+    font-size: var(--一类字体大小); color: var(--头部文字);
+    opacity: 0.7;
+    font-weight: 400; letter-spacing: 0.5px;
+    text-align: right;
+  }
+  .theme-toggle {
+    position: absolute; top: 32px; right: 16px;
+    font-size: var(--六类字体大小); color: var(--头部文字);
+    opacity: 0.7; text-align: right;
+    padding: 0; border: none; background: none; line-height: 1;
+  }
+  .theme-text { font-size:var(--二类字体大小); font-weight:600; line-height:20px; display:inline-block; vertical-align:-0.125em; }
+  body.no-theme-transition .指数-卡片,
+  body.no-theme-transition .汇总-栏,
+  body.no-theme-transition .基金-列表 thead th,
+  body.no-theme-transition .基金-列表 tbody td,
+  body.no-theme-transition .基金-卡片容器,
+  body.no-theme-transition .弹窗-卡片,
+  body.no-theme-transition .页面-输入框 { transition: none !important; }
+  
+  .chart-tooltip {
+    position: absolute;
+    background: rgba(255,255,255,1);
+    border: 1px solid var(--三类字体颜色);
+    border-radius: 12px;
+    padding: 2px 8px;
+    font-size: var(--二类字体大小);
+    font-weight: 500;
+    color: var(--三类字体颜色);
+    white-space: nowrap;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+    width: 130px;
+    text-align: center;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.15s;
+    z-index: 100;
+    pointer-events: none;
+    top: -25px;
+    left: 0;
+    transform: translateX(-50%);
+  }
+  .chart-tooltip.visible {
+    visibility: visible;
+    opacity: 1;
+  }
+  
+  .holdings-list { display: flex; flex-direction: column; }
+  .holding-item { display: flex; align-items: center; padding: 8px; font-size: var(--二类字体大小); gap: 8px; border-bottom: 1px solid var(--默认边框); }
+  .holding-item:last-child { border-bottom: none; }
+  .holding-item .h-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--一类字体颜色); font-weight: 500; }
+  .holding-item .h-change { min-width: 52px; text-align: right; font-weight: 600; font-size: var(--二类字体大小); }
+  .holding-item .h-change.up { color: var(--五类字体颜色); }
+  .holding-item .h-change.down { color: var(--六类字体颜色); }
+  .holding-item .h-weight { min-width: 44px; text-align: right; color: var(--三类字体颜色); font-size: var(--二类字体大小); }
+  .holding-empty { text-align: center; color: var(--三类字体颜色); font-size: var(--二类字体大小); padding: 20px 0; }
+  
+  .详情-标签 { display: flex; gap: 8px; margin: 0 0 4px; width: 100%; position: relative; z-index: 2; }
+  .详情-标签项 { flex: 1; min-width: 0; text-align: center; position: relative; z-index: 1; font-size: var(--二类字体大小); font-weight: 500; border-bottom: 2px solid transparent; display: inline-flex; align-items: center; justify-content: center; cursor: var(--按钮光标); padding: 8px 4px; background: none; border: none; }
+  .详情操作按钮 { flex: 1; padding: 8px 0; font-size: var(--二类字体大小); font-weight: 500; border: none; background: none; color: var(--二类字体颜色); cursor: var(--按钮光标); }
+  .统计值 { font-size: var(--二类字体大小); font-weight: 500; }
+  .字段标签 { display: block; margin-bottom: 4px; }
+  .统计卡 { flex: 1; min-width: 70px; }
+  .tab-indicator { position: absolute; bottom: 0; height: 2px; background: var(--四类字体颜色); transition: left 0.3s ease, width 0.3s ease; pointer-events: none; }
+  .板块-标签按钮 { padding:0 12px; font-size:var(--二类字体大小); font-weight:500; cursor:var(--按钮光标); color:var(--三类字体颜色); border-bottom:2px solid transparent; transition:color 0.15s,border-bottom-color 0.15s; }
+  .板块-标签栏 { padding-top:10px !important; padding-bottom:10px !important; }
+  .板块-标签按钮.active { color:var(--四类字体颜色); border-bottom-color:var(--四类字体颜色); }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+  
+  .history-mini-table { width: 100%; border-collapse: collapse; font-size: var(--二类字体大小); margin-top: 4px; }
+  .history-mini-table th { padding: 8px; color: var(--三类字体颜色); font-weight: 500; font-size: var(--一类字体大小); border-bottom: 1px solid var(--默认边框); }
+  .history-mini-table td { padding: 8px; color: var(--一类字体颜色); font-weight: 500; font-size: var(--二类字体大小); border-bottom: 1px solid var(--默认边框); }
+  .history-mini-table tr:last-child td { border-bottom: none; }
+  .history-mini-table td.up { color: var(--五类字体颜色); font-weight: 600; }
+  .history-mini-table td.down { color: var(--六类字体颜色); font-weight: 600; }
+
+  /* 工具类 */
+  .左对齐 { text-align: left; }
+  .居中对齐 { text-align: center; }
+  .右对齐 { text-align: right; }
+  .弹性1 { flex: 1; }
+  .信息值 { font-weight: 500; color: var(--一类字体颜色); }
+  .图标间距 { margin-right: 4px; }
+  .信息标签 { font-weight: 600; font-size: var(--二类字体大小); }
+  .字号11, .字号12 { font-size: var(--二类字体大小); }
+  .可点击 { cursor: pointer; }
+  .下距6 { margin-bottom: 6px; }
+  .下距8 { margin-bottom: 8px; }
+  .上距2 { margin-top: 2px; }
+  .内距10 { padding: 10px; }
+  .序号列 { min-width: 16px; flex: none; }
+  .行内标签 { font-size: var(--二类字体大小); color: var(--三类字体颜色); display: flex; align-items: center; gap: 6px; cursor: pointer; }
+  .状态提示 { padding: 20px; color: var(--三类字体颜色); }
+  .状态提示-error { padding: 20px; color: var(--六类字体颜色); }
+  .弹性行8 { display: flex; gap: 8px; align-items: center; }
+  .文字截断 { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
