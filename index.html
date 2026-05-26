@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<script>
+  // ★ 全局版本号 —— 改这里即可，CSS/JS 自动破缓存
+  var APP_VERSION = 'V2.9';
+  (function(){
+    function loadCSS(href){var l=document.createElement('link');l.rel='stylesheet';l.href=href;document.head.appendChild(l);}
+    function loadJS(src,onload){var s=document.createElement('script');s.src=src;if(onload)s.onload=onload;document.head.appendChild(s);}
+    loadCSS('js+css/样式.css?v='+APP_VERSION);
+    window._loadAppJS=function(){
+      loadJS('js+css/工具函数.js?v='+APP_VERSION, function(){
+        loadJS('js+css/指数图基金图.js?v='+APP_VERSION, function(){
+          loadJS('js+css/主逻辑.js?v='+APP_VERSION);
+        });
+      });
+    };
+  })();
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<title>基金持仓监控</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="页面-头部">
+  <h1><svg class="图标" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 16l4-8 4 4 4-6"/></svg> 基金持仓监控 <span class="version-tag" id="versionTag"></span></h1>
+  <div class="update-time" id="updateTime">等待刷新...</div>
+  <button class="五类 theme-toggle" id="themeToggle" onclick="toggleTheme()"><svg class="图标" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg></button>
+</div>
+<!-- 指数/板块切换 -->
+<div class="指数-栏" id="indexBar">
+  <div class="指数-标签">
+    <button class="指数-标签项 active" onclick="switchIndexBarTab('index',this)">指数</button>
+    <button class="指数-标签项" onclick="switchIndexBarTab('concept',this)">概念板块</button>
+    <button class="指数-标签项" onclick="switchIndexBarTab('industry',this)">行业板块</button>
+
+  </div>
+  <div class="指数-内容">
+    <div id="indexCards"></div>
+    <div id="sectorPanel" style="display:none;">
+      <div class="板块-标题" id="sectorHeader">
+        <span class="sh-name" onclick="sortSector('name')">板块名称<span class="sort-arrow"></span></span>
+        <span class="sh-pct" onclick="sortSector('pct')">涨幅<span class="sort-arrow">↓</span></span>
+        <span class="sh-flow" onclick="sortSector('flow')">资金流入<span class="sort-arrow"></span></span>
+      </div>
+      <div id="sectorList" class="板块-列表"></div>
+    </div>
+  </div>
+</div>
+<!-- 操作区域 -->
+<div class="页面-操作区">
+  <div id="groupBar" class="hidden">
+    <div id="groupTabs" style="display:flex;gap:8px;align-items:center;flex-wrap:nowrap;"></div>
+  </div>
+  <button class="一类" onclick="spinRefreshIcon(this)"><svg class="图标 图标间距" viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg> 刷新</button>
+  <div class="更多-按钮容器">
+    <button class="一类" onclick="toggleMoreMenu()" id="moreBtn">更多</button>
+    <div class="更多-下拉菜单" id="moreDropdown">
+      <div class="更多-菜单项" onclick="openImportModal();closeMoreMenu();"><svg class="图标 图标间距" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> 导入基金</div>
+      <div class="更多-菜单项" onclick="openSectorPanel();closeMoreMenu();"><svg class="图标 图标间距" viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg> 关联板块</div>
+      <div class="更多-菜单项" onclick="openDailyProfitsModal();closeMoreMenu();"><svg class="图标 图标间距" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 16l4-8 4 4 4-6"/></svg> 每日收益</div>
+      <div class="更多-菜单项" onclick="openGroupModal();closeMoreMenu();"><svg class="图标 图标间距" viewBox="0 0 24 24"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg> 管理分组</div>
+      <div class="更多-菜单项" onclick="openGlobalOpList();closeMoreMenu();"><svg class="图标 图标间距" viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg> 交易记录</div>
+      <div class="更多-菜单项" onclick="exportDataToClipboard();closeMoreMenu();"><svg class="图标 图标间距" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> 导出数据</div>
+      <div class="更多-菜单项" onclick="toggleAutoRefresh();closeMoreMenu();" id="moreAutoRefreshItem"><svg class="图标 图标间距" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 自动刷新</div>
+      <div class="更多-菜单项 危险文字" onclick="clearAllFunds();closeMoreMenu();"><svg class="图标 图标间距" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg> 清空列表</div>
+    </div>
+  </div>
+</div>
+<!-- 导入基金弹窗 -->
+<div class="弹窗-遮罩层" id="importModal" onclick="if(event.target===this)closeImportModal()">
+  <div class="弹窗-卡片">
+    <div class="弹窗-标题">
+      <span>导入基金</span>
+      <button class="五类 弹窗-关闭X" onclick="closeImportModal()"></button>
+    </div>
+    <div class="弹窗-内容 弹窗-内容-紧凑">
+      <div class="详情-标签" style="margin-bottom:12px;gap:12px;">
+        <button class="二类 active 弹性1 居中对齐" onclick="switchImportTab('single',this)">单个导入</button>
+        <button class="二类 弹性1 居中对齐" onclick="switchImportTab('batch',this)">批量导入</button>
+      </div>
+      <div id="importSinglePanel">
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <input type="text" class="页面-输入框 字号12" id="addCode" placeholder="基金代码" maxlength="6" autocomplete="off" onblur="_onFundCodeBlur('addCode')" />
+          <input type="number" class="页面-输入框 字号12" id="addAmount" placeholder="持有金额" step="0.01" min="0" />
+          <input type="number" class="页面-输入框 字号12" id="addProfit" placeholder="持有收益（可选）" step="0.01" />
+          <input type="date" class="页面-输入框 字号12" id="addPurchaseDate" />
+          <input type="text" class="页面-输入框 字号12" id="addSector" placeholder="板块名（可选）" />
+          <div style="display:flex;gap:8px;align-items:center;margin-top:4px;">
+            <label class="行内标签">
+              <input type="checkbox" id="addIsUpdated" checked /> 已更新
+            </label>
+            <div class="弹性1"></div>
+            <button class="三类" style="width:auto;" onclick="submitAddFund()">确认导入</button>
+          </div>
+        </div>
+      </div>
+      <div id="importBatchPanel" style="display:none;">
+        <textarea class="批量-输入框" id="batchInput" placeholder="基金代码 持有金额 持有收益 买入日期  板块
+000001 10000  500 2026-04-20  半导体"></textarea>
+        <div style="display:flex;gap:8px;align-items:center;margin-top:8px;">
+          <label class="行内标签">
+            <input type="checkbox" id="batchIsUpdated" checked /> 已更新
+          </label>
+          <div class="弹性1"></div>
+          <button class="三类" style="width:auto;" onclick="importBatchFunds()">确认导入</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 基金列表 -->
+<div id="fundListArea">
+  <div class="基金-卡片容器">
+    <div class="基金-卡片">
+      <!-- 分组汇总视图 -->
+      <div id="groupSummaryView" style="display:none;"></div>
+      <div id="fundList" class="基金-列表"></div>
+    </div>
+  </div>
+</div>
+<div id="emptyHint" style="display:none;text-align:center;padding:60px 20px;color:var(--三类字体颜色);font-size:var(--三类字体大小);">点击"更多 → 导入基金"开始监控</div>
+<!-- 指数选择弹窗 -->
+<div class="弹窗-遮罩层" id="indexModal" onclick="if(event.target===this)closeIndexModal()">
+  <div class="弹窗-卡片">
+    <div class="弹窗-标题">
+      <span>选择显示的指数（最多6个）</span>
+      <button class="五类 弹窗-关闭X" onclick="closeIndexModal()"></button>
+    </div>
+    <div class="弹窗-内容" id="indexOptions"></div>
+    <div class="弹窗-底部">
+      <button class="三类" onclick="resetIndexSelection()">恢复默认</button>
+      <button class="三类" onclick="saveIndexSelection()">保存</button>
+    </div>
+  </div>
+</div>
+<!-- 确认弹窗 -->
+<div class="弹窗-遮罩层" id="confirmModal" onclick="if(event.target===this)closeConfirmModal()">
+  <div class="弹窗-卡片">
+    <div class="弹窗-标题">
+      <span id="confirmTitle">确认操作</span>
+      <button class="五类 弹窗-关闭X" onclick="closeConfirmModal()"></button>
+    </div>
+    <div class="弹窗-内容" id="confirmBody" style="font-size:var(--三类字体大小);color:var(--二类字体颜色);"></div>
+    <div class="弹窗-底部">
+      <button class="四类" id="confirmBtn" onclick="executeConfirm()">确认</button>
+    </div>
+  </div>
+</div>
+<!-- 分组管理弹窗 -->
+<div class="弹窗-遮罩层" id="groupModal" onclick="if(event.target===this)closeGroupModal()">
+  <div class="弹窗-卡片">
+    <div class="弹窗-标题">
+      <span>管理分组</span>
+      <button class="五类 弹窗-关闭X" onclick="closeGroupModal()"></button>
+    </div>
+    <div class="弹窗-内容" id="groupModalBody"></div>
+    <div class="弹窗-底部">
+      <button class="三类" onclick="addGroup()">添加</button>
+    </div>
+  </div>
+</div>
+<!-- 全局操作记录弹窗 -->
+<div class="弹窗-遮罩层" id="globalOpModal" onclick="if(event.target===this)closeGlobalOpModal()">
+  <div class="弹窗-卡片">
+    <div class="弹窗-标题">
+      <span>全部交易记录</span>
+      <button class="五类 弹窗-关闭X" onclick="closeGlobalOpModal()"></button>
+    </div>
+    <div class="弹窗-内容 弹窗-内容-紧凑 可滚动-60vh" id="globalOpModalBody"></div>
+    <div class="弹窗-底部" style="display:none;"></div>
+  </div>
+</div>
+<!-- 定投配置弹窗 -->
+<div class="弹窗-遮罩层" id="dcaModal" onclick="if(event.target===this)closeDcaModal()">
+  <div class="弹窗-卡片">
+    <div class="弹窗-标题">
+      <span>定投配置</span>
+      <button class="五类 弹窗-关闭X" onclick="closeDcaModal()"></button>
+    </div>
+    <div class="弹窗-内容 弹窗-内容-紧凑 可滚动-60vh" id="dcaModalBody"></div>
+    <div class="弹窗-底部" style="display:flex;gap:8px;justify-content:flex-end;">
+      <button class="三类" onclick="saveDcaPlan()">保存</button>
+    </div>
+  </div>
+</div>
+<!-- 转换弹窗 -->
+<div class="弹窗-遮罩层" id="convertModal" onclick="if(event.target===this)closeConvertModal()">
+  <div class="弹窗-卡片" style="max-width:440px;">
+    <div class="弹窗-标题">
+      <span>基金转换</span>
+      <button class="五类 弹窗-关闭X" onclick="closeConvertModal()"></button>
+    </div>
+    <div class="弹窗-内容 弹窗-内容-紧凑" id="convertModalBody"></div>
+  </div>
+</div>
+<!-- 操作弹窗 -->
+<div class="弹窗-遮罩层" id="actionModal" onclick="if(event.target===this)closeActionModal()">
+  <div class="弹窗-卡片">
+    <div class="弹窗-标题">
+      <span id="actionModalTitle">操作</span>
+      <button class="五类 弹窗-关闭X" onclick="closeActionModal()"></button>
+    </div>
+    <div class="弹窗-内容" id="actionModalBody" style="padding:16px 20px;"></div>
+  </div>
+</div>
+<!-- 指数详情弹窗 -->
+<div class="弹窗-遮罩层" id="indexDetailModal" onclick="if(event.target===this)closeIndexDetail()">
+  <div class="弹窗-卡片">
+    <div class="弹窗-标题">
+      <span id="indexDetailTitle">指数详情</span>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <button class="三类 字号11" onclick="closeIndexDetail();setTimeout(openIndexModal,200)">切换指数</button>
+        <button class="五类 弹窗-关闭X" onclick="closeIndexDetail()"></button>
+      </div>
+    </div>
+    <div class="弹窗-内容 弹窗-内容-紧凑" id="indexDetailBody">
+      <!-- 基本信息栏 -->
+      <div id="indexDetailInfo" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;"></div>
+      <!-- 周期切换 -->
+      <div id="indexDetailTabs" style="display:flex;gap:4px;margin-bottom:8px;overflow-x:auto;"></div>
+      <!-- 图表 -->
+      <div class="画布容器">
+        <canvas id="indexDetailCanvas"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 关联板块弹窗 -->
+<div class="弹窗-遮罩层" id="sectorModal" onclick="if(event.target===this)closeSectorPanel()">
+  <div class="弹窗-卡片">
+    <div class="弹窗-标题">
+      <span>关联板块</span>
+      <button class="五类 弹窗-关闭X" onclick="closeSectorPanel()"></button>
+    </div>
+    <div class="板块-标签 板块-头部">
+      <button class="二类 active 弹性1" onclick="switchSectorTab('single',this)">单个输入</button>
+      <button class="二类 弹性1" onclick="switchSectorTab('batch',this)">批量导入</button>
+    </div>
+    <div class="弹窗-内容 可滚动-50vh" id="sectorBody"></div>
+    <div class="弹窗-内容 可滚动-50vh 弹窗-内容-紧凑" id="sectorBatchBody" style="display:none;">
+      <textarea id="sectorBatchInput" class="批量-输入框" placeholder="华夏创业板50ETF发起式联接C    创业板50
+023883    创业板50" style="width:100%;height:200px;"></textarea>
+    </div>
+    <div class="弹窗-底部">
+      <button class="三类" onclick="saveSectors()">保存</button>
+    </div>
+  </div>
+</div>
+<!-- 基金详情弹窗 -->
+<div class="弹窗-遮罩层" id="fundDetailModal" onclick="if(event.target===this)closeFundDetailModal()">
+  <div class="弹窗-卡片">
+    <div class="弹窗-标题">
+      <span id="fundDetailTitle">基金详情</span>
+      <button class="五类 弹窗-关闭X" onclick="closeFundDetailModal()"></button>
+    </div>
+    <div class="弹窗-内容 可滚动-70vh" id="fundDetailBody" style="padding:0;"></div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<!-- 每日收益弹窗 -->
+<div class="弹窗-遮罩层" id="dailyProfitsModal" onclick="if(event.target===this)closeDailyProfitsModal()">
+  <div class="弹窗-卡片">
+    <div class="弹窗-标题">
+      <span>每日收益</span>
+      <button class="五类 弹窗-关闭X" onclick="closeDailyProfitsModal()"></button>
+    </div>
+    <div class="弹窗-内容 弹窗-内容-紧凑 可滚动-70vh" id="dailyProfitsBody"></div>
+  </div>
+</div>
+<div class="弹窗-遮罩层" id="tabSettingsModal" onclick="if(event.target===this)closeTabSettings()">
+  <div id="tabSettings" class="弹窗-卡片">
+    <div class="ts-title">周期排序</div>
+    <div id="tsList"></div>
+    <div class="ts-hint">拖拽排序</div>
+    <button class="三类" onclick="applyTabOrder()">确定</button>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+<script>_loadAppJS();</script>
+<!-- 导出数据弹窗 -->
+<div class="弹窗-遮罩层" id="exportModal" onclick="if(event.target===this)closeExportModal()">
+  <div class="弹窗-卡片">
+    <div class="弹窗-标题">
+      <span>导出数据</span>
+      <button class="五类 弹窗-关闭X" onclick="closeExportModal()"></button>
+    </div>
+    <div class="弹窗-内容 弹窗-内容-紧凑 可滚动-60vh" id="exportBody"></div>
+    <div class="弹窗-底部">
+      <button class="三类" onclick="doExportData()">确认导出</button>
+    </div>
+  </div>
+</div>
+</body>
+</html>
